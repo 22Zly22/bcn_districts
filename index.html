@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title>Barcelona's Districts In Class</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.52.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.52.0/mapbox-gl.css' rel='stylesheet' />
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.52.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.52.0/mapbox-gl.css' rel='stylesheet' />
+    
+    
+    
+    <style>
+        body { 
+          margin:0; 
+          padding:0;
+          font-family: Din-Black;
+          font-size: 14px;
+        }
+        #Map { 
+          position:absolute; 
+          top:0; 
+          bottom:0; 
+          width:100%;
+          max-zoom: 13;
+        }
+        #panel {
+          background:rgba(255, 255, 255, 0.8); 
+          width:300px; 
+          border:1px solid rgba(0,0,0,0.05);
+          position: absolute;
+          right:16px;
+          top:16px;
+          box-shadow:0 0 4px 0 rgba(0,0,0,0.1);
+          color: rgba(0,0,0,0.5); 
+        } 
+        h4{
+          text-transform:uppercase;
+          border-bottom:1px solid rgba(0,0,0,0.1);
+          margin: 0;
+          padding: 16px;   
+        }
+
+        ul {
+          list-style-type: none;
+          margin: 0;
+          padding: 16px;
+        }
+
+        ul span{
+          width: 10px;
+          height: 10px;
+          display: inline-block;
+          margin-right: 8px;
+          border-radius: 50%
+        }
+
+
+
+        dd {
+          margin-left: 0%;
+          margin-bottom: 8px;
+          font-weight: bold;
+          font-size: 14px;
+          color: rgba(158, 0, 87, 0.6);
+        }
+
+
+        dt{
+          margin-bottom: 8px;
+          font-size: 12px;
+          font-weight: bold;
+          color: rgba(0, 0, 0, 0.5);
+        }
+
+
+
+        dl{
+          margin-bottom: 0;
+        
+        }
+
+
+        .mapboxgl-popup-content{
+          font-weight: 14px;
+          color: rgba(0, 0, 0, 0.5);
+          min-width: 200px;
+          max-width: 200px;
+          box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.1);
+          background-color: rgba(255, 255, 255, 0.3);
+        }
+
+
+
+    </style>
+</head>
+  
+<body>
+
+       
+
+
+
+
+    
+   <div id='Map'></div>
+   <div id='panel'>
+     <h4>Barcelona's Districts</h4>
+     <ul>
+      <li><span style="background:#68bfca; border:1px solid;"> </span> Ciutat Vella </li>
+      <li><span style="background:#ffffb3; border:1px solid;"> </span> Eixample </li>
+      <li><span style="background:#bebada; border:1px solid;"> </span> Sants-Montjuic </li>
+      <li><span style="background:#fb8072; border:1px solid;"> </span> Les Corts </li>
+      <li><span style="background:#80b1d3; border:1px solid;"> </span> Sarria-Sant Gervasi </li>
+      <li><span style="background:#fdb462; border:1px solid;"> </span> Gracia </li>
+      <li><span style="background:#b3de69; border:1px solid;"> </span> Horta-Guinardo </li>
+      <li><span style="background:#fccde5; border:1px solid;"> </span> Nou Barris </li>
+      <li><span style="background:#d9d9d9; border:1px solid;"> </span> Sant Andreu </li>
+      <li><span style="background:#bc80bd; border:1px solid;"> </span> Sant Marti </li>
+     </ul>
+   </div>
+ 
+  
+  <script>
+      var DistrictName = {
+        '01':'Ciutat Vella',
+        '02':'Eixample',
+        '03':'Gràcia',
+        '04':'Horta-Guinardó',
+        '05':'Les Corts',
+        '06':'Nou Barris',
+        '07':'Sant Andreu',
+        '08':'Sant Martí',
+        '09':'Sants-Montjuïc',
+        '10':'Sarrià-Sant Gervasi'
+      };
+
+
+    
+
+
+
+
+
+
+      mapboxgl.accessToken = 'pk.eyJ1IjoiMjJ6bHkyMiIsImEiOiJjaWVyczVyMDEwMXdhd2drbThibW0ycm5lIn0.ppawqOJ5BzuLBZVj9l3ANA';
+    var Map = new mapboxgl.Map({
+        container: 'Map', // container id
+        style: 'mapbox://styles/22zly22/cjr9fvqlc1bs32stk4afruex5', // stylesheet location
+        center: [2.168,41.400], // starting position [lng, lat]
+        zoom: 13.10, // starting zoom               
+        minZoom: 13.10,
+        maxZoom: 16,
+        bearing: -45.2,        
+        });
+
+    // function onClick(event){
+    //   console.log('Mouse has been Clicked');
+    //   console.log(event);
+    // }
+    Map.on('load', function () {
+      Map.doubleClickZoom.disable();
+    });
+
+
+
+    Map.on('mousemove', function(event){
+    //console.log(event);
+   
+        if (Map.loaded()){
+        
+        
+        
+        
+            var features_TU = Map.queryRenderedFeatures(event.point, {layers: ['bcn-8wg29z']});
+
+            Map.getCanvas().style.cursor = features_TU ? 'crosshair': '';
+
+
+        
+         }
+        });
+
+
+
+    Map.on('dblclick', function(event){
+      //console.log('Mouse has been Clicked');
+      //console.log(event);
+
+
+
+      var parameters = {
+        layers: ['bcn-8wg29z'] //-----选择要显示的图层（如果有很多图层的话）
+      };
+
+
+
+      var geometry = event.point
+      var features_TU = Map.queryRenderedFeatures(geometry, parameters);
+        var TU0 = features_TU[0];
+        //console.log(TU0.properties);
+
+
+      /*
+      <dl>
+      <dd>Description</dd>
+      <dt>Data</dt>
+      </dt>
+      */
+
+      if (features_TU.length > 0){
+        var Area = TU0.properties.Area || '---';
+        var District = DistrictName[TU0.properties.District] || '---';
+        var Barri = TU0.properties.NBarri || '---';
+        var Inhabitants = TU0.properties.NHabitatge || '---';
+        var Lots = TU0.properties.N_Parceles || '---';
+        var ParkingSpots = TU0.properties.N_Parquing || '---';
+        var Perimetre = TU0.properties.Perimetre || '---';
+
+
+      /*<dl>
+          <dd>Area</dd>
+          <dt>Area</dt>
+          <dd>District</dd>
+          <dt>District</dt>
+          <dd>Barri</dd>
+          <dt>Barri</dt>
+          <dd>Inhabitants</dd>
+          <dt>Inhabitants</dt>
+          <dd>Lots</dd>
+          <dt>Lots</dt>
+          <dd>ParkingSpots</dd>
+          <dt>ParkingSpots</dt>
+          <dd>Perimetre</dd>
+          <dt>Perimetre</dt>
+        </dt>
+      */
+
+
+        
+        var popup = new mapboxgl.Popup()
+          .setLngLat(event.lngLat)
+          .setHTML('<dl>'+
+            '<dd>Area</dd>'+
+            '<dt>'+ Area +'</dt>'+
+            '<dd>District</dd>'+
+            '<dt>'+ District +'</dt>'+
+            '<dd>Barri</dd>'+
+            '<dt>'+ Barri +'</dt>'+
+            '<dd>Inhabitants</dd>'+
+            '<dt>'+ Inhabitants +'</dt>'+
+            '<dd>Lots</dd>'+
+            '<dt>'+ Lots +'</dt>'+
+            '<dd>ParkingSpot</dd>'+
+            '<dt>'+ ParkingSpots +'</dt>'+
+            '<dd>Perimetre</dd>'+
+            '<dt>'+ Perimetre +'</dt>'+
+            '</dl>')
+          .addTo(Map);
+
+
+
+
+
+
+        //console.log(features_TU[0].properties);
+        //console.log(features_TU.length + 'features');
+    }}
+    );
+
+
+    var nav1 = new mapboxgl.NavigationControl();
+    Map.addControl(nav1, 'bottom-right');
+    var nav2 = new mapboxgl.FullscreenControl();
+    Map.addControl(nav2, 'bottom-left');
+    Map.addControl(new MapboxDirections({
+    accessToken: mapboxgl.accessToken
+    }), 'top-left');
+  </script>
+
+</body>
+</html>
